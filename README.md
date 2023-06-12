@@ -13,7 +13,7 @@ Install these prerequisites to start VoteMe
 
 ## Step 2. Install dependencies
 ```
-$ cd election
+$ cd VoteMe
 $ npm install
 ```
 ## Step 3. Start Ganache
