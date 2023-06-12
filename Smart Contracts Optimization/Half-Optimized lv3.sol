@@ -1,27 +1,28 @@
+// SPDX-License-Identifier: GPL-3.0
+// uintX to uint256
 pragma solidity >=0.5.16;
 
 contract Election {
     // Model a Candidate
     struct Candidate {
-        uint id;
+        uint256 id;
+        uint256 voteCount;
         string name;
         string party;
-        uint voteCount;
     }
-
+ 
     // Store accounts that have voted
     mapping(address => bool) public voters;
-    // Store Candidates
-    // Fetch Candidate
-    mapping(uint => Candidate) public candidates;
+    // Store and Fetch Candidates
+    mapping(uint256 => Candidate) public candidates;
     // Store Candidates Count
-    uint public candidatesCount;
-
+    uint256 public candidatesCount;
+ 
     // voted event
     event votedEvent (
-        uint indexed _candidateId
+        uint256 indexed _candidateId
     );
-
+ 
     constructor () public {
         addCandidate("Ranil Wickremesinghe","United National Party");
         addCandidate("Mahinda Rajapaksha","Sri Lanka Podujana Peramuna");
@@ -30,26 +31,49 @@ contract Election {
         addCandidate("Maithripala Sirisena","Sri Lanka Freedom Party");
         addCandidate("NOTA","None of the above");
     }
-
+ 
     function addCandidate (string memory name,string memory party) private {
         candidatesCount ++;
-        candidates[candidatesCount] = Candidate(candidatesCount, name,party, 0);
+        candidates[candidatesCount] = Candidate(candidatesCount, 0, name,party);
     }
-
-    function vote (uint _candidateId) public {
+    
+    function checkVoter ()  private view returns(bool) {
+        if( !voters[msg.sender] == true )
+        {
+            return true;
+        }
+        else { 
+            return false;
+        }
+    }
+ 
+    function checkCandidate (uint256 _candidateId)  private view returns(bool) {
+        if( _candidateId > 0 && _candidateId <= candidatesCount)
+        {
+            return true;
+        }
+        else { 
+            return false;
+        }
+    }
+ 
+    function vote (uint256 _candidateId) public {
         // require that they haven't voted before
-        require(!voters[msg.sender]);
-
-        // require a valid candidate
-        require(_candidateId > 0 && _candidateId <= candidatesCount);
-
+        bool status;
+        status = checkVoter();
+        if( status == true )
+        {
         // record that voter has voted
         voters[msg.sender] = true;
-
         // update candidate vote Count
         candidates[_candidateId].voteCount ++;
-
         // trigger voted event
         emit votedEvent(_candidateId);
+        }
+        else { 
+        }
+        // require a valid candidate
+        checkCandidate(_candidateId);
+ 
     }
 }
