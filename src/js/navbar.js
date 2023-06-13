@@ -92,7 +92,7 @@ $(function() {
       $("#title").text("VoteMe භාවිතා කරන්නෙ කෙසේද?");
       $("#hello").text("ආයුබෝවන්, ඡන්දදායකයා!");
       $(".small").text("මඟින් ");
-      // $(".small p:nth-child(1) a").text("Sri Lanka Institute of Information Technology");
+       $(".small p:nth-child(1) a").text("Sri Lanka Institute of Information Technology");
       $("#date").text("17 ජූලි 2022 පළ කරන ලදී"); 
   });
 });
